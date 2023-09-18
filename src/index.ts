@@ -67,7 +67,7 @@ class MagicLoginStrategy {
     self._options.verify(payload, verifyCallback, req);
   }
 
-  send = (req: Request, res: Response): void => {
+  send = (req: Request, res: Response,code?: string): void => {
     const payload = req.method === 'GET' ? req.query : req.body;
     if (
       req.method === 'POST' &&
@@ -84,7 +84,10 @@ class MagicLoginStrategy {
       return;
     }
 
-    const code = Math.floor(Math.random() * 90000) + 10000 + '';
+    if (!code){
+      code = Math.floor(Math.random() * 90000) + 10000 + '';
+    }
+
     const jwt = generateToken(
       this._options.secret,
       {
